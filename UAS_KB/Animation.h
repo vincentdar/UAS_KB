@@ -20,6 +20,7 @@ namespace UAS_KB
 		int FrameY = 0;
 	public:
 		void Attach(sf::Texture& tex, sf::Sprite& sprite);
+		void Attach(sf::Texture& tex, sf::Sprite& sprite, int width, int height);
 		void Change(int m_frameCount, float m_duration, int frameX, int frameY);
 		void Update(float dt, sf::Sprite& sprite, bool isRight);
 		int GetAnimFrame();

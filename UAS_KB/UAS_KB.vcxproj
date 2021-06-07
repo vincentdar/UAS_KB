@@ -148,6 +148,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="HexGame.cpp" />
+    <ClCompile Include="HexTile.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SplashState.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HexGame.h" />
+    <ClInclude Include="HexTile.h" />
     <ClInclude Include="IActor.h" />
     <ClInclude Include="IState.h" />
     <ClInclude Include="Macro.h" />

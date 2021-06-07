@@ -13,6 +13,17 @@ namespace UAS_KB
 		FrameY = 0;
 	}
 
+	void Animation::Attach(sf::Texture& tex, sf::Sprite& sprite, int width, int height)
+	{
+		m_tex = tex;
+		m_frameCount = 0;
+		m_sprite_size.x = width;
+		m_sprite_size.y = height;
+		m_duration = 0;
+		FrameX = 0;
+		FrameY = 0;
+	}
+
 	void Animation::Change(int frameCount, float duration, int frameX, int frameY)
 	{
 		m_frameCount = frameCount;

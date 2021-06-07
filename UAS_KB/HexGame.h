@@ -1,6 +1,7 @@
 #pragma once
 #include "IState.h"
 #include "Game.h"
+#include "HexTile.h"
 #include <SFML/Graphics.hpp>
 
 namespace UAS_KB
@@ -11,6 +12,9 @@ namespace UAS_KB
 		sf::Clock m_clock;
 		sf::Sprite m_background;
 		GameDataRef m_data;
+		
+		//Game Components
+		HexTile* tile;
 	public:
 		HexGame(GameDataRef data);
 		virtual void VInit();
