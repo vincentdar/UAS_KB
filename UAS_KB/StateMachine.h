@@ -3,7 +3,6 @@
 #include <stack>
 
 #include "IState.h"
-#include "Logger.h"
 
 namespace UAS_KB
 {

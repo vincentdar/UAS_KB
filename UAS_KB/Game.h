@@ -1,11 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "AssetManager.h"
 #include "StateMachine.h"
 #include "Macro.h"
-#include "Logger.h"
 
 namespace UAS_KB
 {

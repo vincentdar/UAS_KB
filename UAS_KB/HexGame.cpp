@@ -7,6 +7,7 @@ namespace UAS_KB
 	}
 	void HexGame::VInit()
 	{
+		std::cout << "Abed beb" << std::endl;
 	}
 	void HexGame::VDraw(float dt)
 	{
@@ -43,6 +44,7 @@ namespace UAS_KB
 	}
 	void HexGame::VExit()
 	{
+		std::cout << "lope u" << std::endl;
 		m_data->machine.RemoveState();
 	}
 }
