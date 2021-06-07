@@ -11,7 +11,7 @@ namespace UAS_KB
 
 		m_data->assets.LoadSoundBuffer("LOGO_SFX", LOGO_SFX);
 		m_data->machine.AddState(StateRef(new SplashState(this->m_data)), true);
-		Logger::PrintLn("Added Splash state");
+		std::cout << "Added Splash State" << std::endl;
 		
 		this->Run();
 	}
@@ -26,8 +26,6 @@ namespace UAS_KB
 
 		while (exit == false && this->m_data->window.isOpen())
 		{
-			//Logger::Clear();
-			//Logger::PrintLn("Run");
 			this->m_data->machine.ProcessStateChanges();
 			if (m_data->machine.StackEmpty())
 			{
