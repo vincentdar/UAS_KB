@@ -16,13 +16,14 @@ namespace UAS_KB
 		bool toggle = false;
 		bool clicked = false;
 	public:
-		HexTile(GameDataRef data);
-		virtual void VInit();
+		HexTile();
+		virtual void VInit(GameDataRef data);
 		virtual void VHandleInput();
 		virtual void VDraw(float dt);
 		virtual void VUpdate(float dt);
 		virtual sf::Sprite& VGetSprite();
-		void ClickRed();
+		void SetPosition(float x, float y);
+		void ClickBlue(int x, int y);
 	};
 }
 

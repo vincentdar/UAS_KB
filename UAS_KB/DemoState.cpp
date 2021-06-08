@@ -1,4 +1,5 @@
 #include "DemoState.h"
+#include "HexGame.h"
 
 namespace UAS_KB
 {
@@ -32,7 +33,7 @@ namespace UAS_KB
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 			{
-				m_data->machine.AddState(StateRef(new DemoState(m_data)), false);			
+				m_data->machine.AddState(StateRef(new HexGame(m_data)), false);			
 			}
 		}
 		m_hero.VHandleInput();

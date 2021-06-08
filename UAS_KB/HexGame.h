@@ -14,9 +14,13 @@ namespace UAS_KB
 		GameDataRef m_data;
 		
 		//Game Components
-		HexTile* tile;
+		HexTile** board;
+		int size = 11;
+		bool exit = false;
+
 	public:
 		HexGame(GameDataRef data);
+		~HexGame();
 		virtual void VInit();
 		virtual void VDraw(float dt);
 		virtual void VHandleInput();
@@ -24,6 +28,8 @@ namespace UAS_KB
 		virtual void VResume();
 		virtual void VPause();
 		virtual void VExit();
+		void CreateBoard();
+		void DestroyBoard();
 	};
 
 }

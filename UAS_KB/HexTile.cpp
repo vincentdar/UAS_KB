@@ -2,18 +2,19 @@
 
 namespace UAS_KB
 {
-	HexTile::HexTile(GameDataRef data): m_data(data)
+	HexTile::HexTile()
 	{
 	}
-	void HexTile::VInit()
+	void HexTile::VInit(GameDataRef data)
 	{
+		m_data = data;
 		m_texture = m_data->assets.GetTexture("HexTile");
 		anim.Attach(m_texture, m_sprite, 60, 52);
-		anim.Change(1, 0.5, 0, 0);
+		anim.Change(1, 0.5, 2, 0);
 		m_sprite.setTexture(m_texture);
 		m_sprite.setPosition(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
 		m_sprite.setScale(1, 1);
-
+		anim.Update(0.0f, m_sprite, true);
 	}
 	void HexTile::VHandleInput()
 	{	
@@ -30,17 +31,30 @@ namespace UAS_KB
 		// TODO: insert return statement here
 		return m_sprite;
 	}
-	void HexTile::ClickRed()
+	void HexTile::SetPosition(float x, float y)
 	{
-		if (toggle)
+		m_sprite.setPosition(x, y);
+	}
+	void HexTile::ClickBlue(int x, int y)
+	{
+		sf::Vector2f origin = m_sprite.getPosition();
+		if (x >= origin.x && x <= origin.x + 60)
 		{
-			anim.Change(1, 0.5, 1, 0);
-			toggle = false;
+			if (y >= origin.y + 13 && y <= origin.y + 52 - 13)
+			{
+				if (toggle)
+				{
+					anim.Change(1, 0.5, 1, 0);
+					toggle = false;
+				}
+				else if (!toggle)
+				{
+					anim.Change(1, 0.5, 2, 0);
+					toggle = true;
+				}
+			}
 		}
-		else if (!toggle)
-		{
-			anim.Change(1, 0.5, 0, 0);
-			toggle = true;
-		}
+
+		
 	}
 }

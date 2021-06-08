@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "DemoState.h"
 #include "SplashState.h"
+#include "HexGame.h"
 
 namespace UAS_KB
 {
@@ -10,7 +11,7 @@ namespace UAS_KB
 
 
 		m_data->assets.LoadSoundBuffer("LOGO_SFX", LOGO_SFX);
-		m_data->machine.AddState(StateRef(new SplashState(this->m_data)), true);
+		m_data->machine.AddState(StateRef(new HexGame(this->m_data)), true);
 		std::cout << "Added Splash State" << std::endl;
 		
 		this->Run();
