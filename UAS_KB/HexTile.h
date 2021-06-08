@@ -15,6 +15,7 @@ namespace UAS_KB
 		Animation anim;
 		bool toggle = false;
 		bool clicked = false;
+		int status = 0;	//0 = Gay, 1 = Blue, 2 = Red
 	public:
 		HexTile();
 		virtual void VInit(GameDataRef data);
@@ -24,6 +25,8 @@ namespace UAS_KB
 		virtual sf::Sprite& VGetSprite();
 		void SetPosition(float x, float y);
 		void ClickBlue(int x, int y);
+		void ClickRed(int x, int y);
+		int GetStatus();
 	};
 }
 

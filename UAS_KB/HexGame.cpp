@@ -59,6 +59,17 @@ namespace UAS_KB
 					}
 				}
 			}
+			if (event.mouseButton.button == sf::Mouse::Right)
+			{
+				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
+				for (int i = 0; i < size; i++)
+				{
+					for (int j = 0; j < size; j++)
+					{
+						board[i][j].ClickRed(localPosition.x, localPosition.y);
+					}
+				}
+			}
 		}
 		//Polling input khusus Member Variable berupa Objek misal. m_hero.HandleInput()
 	}

@@ -42,19 +42,31 @@ namespace UAS_KB
 		{
 			if (y >= origin.y + 13 && y <= origin.y + 52 - 13)
 			{
-				if (toggle)
+				if (status == 0)
 				{
 					anim.Change(1, 0.5, 1, 0);
-					toggle = false;
-				}
-				else if (!toggle)
-				{
-					anim.Change(1, 0.5, 2, 0);
-					toggle = true;
+					status = 1;
 				}
 			}
 		}
-
-		
+	}
+	void HexTile::ClickRed(int x, int y)
+	{
+		sf::Vector2f origin = m_sprite.getPosition();
+		if (x >= origin.x && x <= origin.x + 60)
+		{
+			if (y >= origin.y + 13 && y <= origin.y + 52 - 13)
+			{
+				if (status == 0)
+				{
+					anim.Change(1, 0.5, 0, 0);
+					status = 2;
+				}
+			}
+		}
+	}
+	int HexTile::GetStatus()
+	{
+		return status;
 	}
 }
