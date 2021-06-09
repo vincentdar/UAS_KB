@@ -48,6 +48,10 @@ namespace UAS_KB
 			{
 				this->VExit();
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+			{
+				DisplayBoardStatus();
+			}
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
 				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
@@ -140,5 +144,21 @@ namespace UAS_KB
 			delete[] board[i];
 		}
 		delete[] board;
+	}
+	void HexGame::DisplayBoardStatus()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				std::cout << board[i][j].GetStatus() << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	void HexGame::CheckBoardCondition()
+	{
+
 	}
 }

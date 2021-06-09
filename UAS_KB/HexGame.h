@@ -30,6 +30,8 @@ namespace UAS_KB
 		virtual void VExit();
 		void CreateBoard();
 		void DestroyBoard();
+		void DisplayBoardStatus();
+		void CheckBoardCondition();
 	};
 
 }
