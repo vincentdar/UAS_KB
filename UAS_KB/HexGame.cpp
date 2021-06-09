@@ -12,8 +12,7 @@ namespace UAS_KB
 		DestroyBoard();
 	}
 	void HexGame::VInit()
-	{
-		
+	{		
 		std::cout << "Abed beb" << std::endl;
 		m_data->assets.LoadTexture("HexTile", HEX_TILESET);
 
@@ -135,6 +134,17 @@ namespace UAS_KB
 			y += 39;
 			offset += 30;
 		}
+
+		//TEMP
+		for (int i = 0; i < 6; i++)
+		{
+			int x = 7;
+			int y = size - 1;
+			if (IsValidIndex(direction[i][0], direction[i][1], x, y))
+			{
+				board[direction[i][0] + x][direction[i][1] + y].SetStatus(1);
+			}
+		}
 	}
 	void HexGame::DestroyBoard()
 	{
@@ -159,6 +169,43 @@ namespace UAS_KB
 	}
 	void HexGame::CheckBoardCondition()
 	{
-
+		//Check if board is touching the top and bottom boundaries
+		//top boundaries
+		for (int i = 0; i < size; i++)
+		{
+			if (board[0][i].GetStatus() == 1)
+			{
+				Node* first = new Node();
+				first->i = 0;
+				first->j = i;
+				first->parent;
+				RecurseCheck(first);
+			}
+		}
 	}
+
+	bool HexGame::IsValidIndex(int x, int y, int dir_x, int dir_y)
+	{
+		if ((x + dir_x >= 0 && x + dir_x < size) && (y + dir_y >= 0 && y + dir_y < size))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	int HexGame::RecurseCheck(Node* parent)
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			if (IsValidIndex(parent->i, parent->j, direction[i][0], direction[i][1]))
+			{
+				Node* node = new Node();
+				node->i = parent->i + direction[i][0];
+				node->j = parent->j + direction[i][1];
+				node->parent = parent;
+			}
+		}
+		return 1;
+	}
+
 }

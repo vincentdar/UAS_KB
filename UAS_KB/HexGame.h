@@ -6,6 +6,27 @@
 
 namespace UAS_KB
 {
+	class Node
+	{
+	public:
+		//Index in BOARD
+		int i;
+		int j;
+
+		//Pointer to other Nodes
+		Node* parent;
+		std::vector<Node*> nodes;
+
+		bool AddNodes(Node* node)
+		{
+			if (node == parent)
+			{
+				return false;
+			}
+			nodes.push_back(node);
+		}
+	};
+
 	class HexGame: public IState
 	{
 	private:
@@ -15,6 +36,7 @@ namespace UAS_KB
 		
 		//Game Components
 		HexTile** board;
+		int direction[6][2] = { {0, -1}, {1 , -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1} };
 		int size = 11;
 		bool exit = false;
 
@@ -32,6 +54,8 @@ namespace UAS_KB
 		void DestroyBoard();
 		void DisplayBoardStatus();
 		void CheckBoardCondition();
+		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
+		int RecurseCheck(Node* parent);
 	};
 
 }

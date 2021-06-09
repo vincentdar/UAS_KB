@@ -26,7 +26,9 @@ namespace UAS_KB
 		void SetPosition(float x, float y);
 		void ClickBlue(int x, int y);
 		void ClickRed(int x, int y);
+		void SetStatus(int status);
 		int GetStatus();
+
 	};
 }
 

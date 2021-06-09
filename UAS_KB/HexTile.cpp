@@ -65,6 +65,11 @@ namespace UAS_KB
 			}
 		}
 	}
+	void HexTile::SetStatus(int status)
+	{
+		this->status = status;
+		anim.Change(1, 0.5, 1, 0);
+	}
 	int HexTile::GetStatus()
 	{
 		return status;
