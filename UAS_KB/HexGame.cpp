@@ -49,7 +49,7 @@ namespace UAS_KB
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 			{
-				DisplayBoardStatus();
+				displayBoard = true;
 			}
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
@@ -89,6 +89,11 @@ namespace UAS_KB
 			{
 				board[i][j].VUpdate(dt);
 			}
+		}
+		if (displayBoard)
+		{
+			DisplayBoardStatus();
+			displayBoard = false;
 		}
 	}
 	void HexGame::VResume()
@@ -136,7 +141,7 @@ namespace UAS_KB
 		}
 
 		//TEMP
-		for (int i = 0; i < 6; i++)
+		/*for (int i = 0; i < 6; i++)
 		{
 			int x = 7;
 			int y = size - 1;
@@ -144,7 +149,7 @@ namespace UAS_KB
 			{
 				board[direction[i][0] + x][direction[i][1] + y].SetStatus(1);
 			}
-		}
+		}*/
 	}
 	void HexGame::DestroyBoard()
 	{
@@ -166,6 +171,8 @@ namespace UAS_KB
 			std::cout << std::endl;
 		}
 		std::cout << std::endl;
+		CheckBoardCondition();
+		std::cout << std::endl;
 	}
 	void HexGame::CheckBoardCondition()
 	{
@@ -179,7 +186,17 @@ namespace UAS_KB
 				first->i = 0;
 				first->j = i;
 				first->parent;
-				RecurseCheck(first);
+				board[first->i][first->j].SetVisited(true);
+				int res = RecurseCheck(first);
+				board[first->i][first->j].SetVisited(false);
+				if (res == 1)
+				{
+					std::cout << "Connected" << std::endl;
+				}
+				else
+				{
+					std::cout << "Disconnected" << std::endl;
+				}
 			}
 		}
 	}
@@ -195,17 +212,35 @@ namespace UAS_KB
 
 	int HexGame::RecurseCheck(Node* parent)
 	{
+		if (parent->i == size - 1 || parent->j == size - 1)
+		{
+			return 1;
+		}
 		for (int i = 0; i < 6; i++)
 		{
 			if (IsValidIndex(parent->i, parent->j, direction[i][0], direction[i][1]))
 			{
-				Node* node = new Node();
-				node->i = parent->i + direction[i][0];
-				node->j = parent->j + direction[i][1];
-				node->parent = parent;
+				if (board[parent->i + direction[i][0]][parent->j + direction[i][1]].GetStatus() == 1)
+				{
+					if (board[parent->i + direction[i][0]][parent->j + direction[i][1]].IsVisited() == false)
+					{
+						Node* node = new Node();
+						node->i = parent->i + direction[i][0];
+						node->j = parent->j + direction[i][1];
+						node->parent = parent;
+						board[node->i][node->j].SetVisited(true);
+						int res = RecurseCheck(node);
+						board[node->i][node->j].SetVisited(false);
+						if (res == 1)
+						{
+							return 1;
+						}
+					}
+				}
+				
 			}
 		}
-		return 1;
+		return 0;
 	}
 
 }

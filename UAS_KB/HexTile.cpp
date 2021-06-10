@@ -74,4 +74,12 @@ namespace UAS_KB
 	{
 		return status;
 	}
+	void HexTile::SetVisited(bool b)
+	{
+		visited = b;
+	}
+	bool HexTile::IsVisited()
+	{
+		return visited;
+	}
 }

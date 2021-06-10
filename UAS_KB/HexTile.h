@@ -13,7 +13,7 @@ namespace UAS_KB
 		sf::Sprite m_sprite;
 
 		Animation anim;
-		bool toggle = false;
+		bool visited = false;
 		bool clicked = false;
 		int status = 0;	//0 = Gay, 1 = Blue, 2 = Red
 	public:
@@ -28,6 +28,8 @@ namespace UAS_KB
 		void ClickRed(int x, int y);
 		void SetStatus(int status);
 		int GetStatus();
+		void SetVisited(bool b);
+		bool IsVisited();
 
 	};
 }

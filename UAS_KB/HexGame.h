@@ -39,6 +39,7 @@ namespace UAS_KB
 		int direction[6][2] = { {0, -1}, {1 , -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1} };
 		int size = 11;
 		bool exit = false;
+		bool displayBoard = false;
 
 	public:
 		HexGame(GameDataRef data);
