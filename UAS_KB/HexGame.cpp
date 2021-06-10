@@ -139,17 +139,6 @@ namespace UAS_KB
 			y += 39;
 			offset += 30;
 		}
-
-		//TEMP
-		/*for (int i = 0; i < 6; i++)
-		{
-			int x = 7;
-			int y = size - 1;
-			if (IsValidIndex(direction[i][0], direction[i][1], x, y))
-			{
-				board[direction[i][0] + x][direction[i][1] + y].SetStatus(1);
-			}
-		}*/
 	}
 	void HexGame::DestroyBoard()
 	{
@@ -187,7 +176,7 @@ namespace UAS_KB
 				first->j = i;
 				first->parent;
 				board[first->i][first->j].SetVisited(true);
-				int res = RecurseCheck(first);
+				int res = RecurseCheck(first, 1);
 				board[first->i][first->j].SetVisited(false);
 				if (res == 1)
 				{
@@ -197,6 +186,31 @@ namespace UAS_KB
 				{
 					std::cout << "Disconnected" << std::endl;
 				}
+				delete first;
+			}
+		}
+		//Check if board is touching the top and bottom boundaries
+		//left boundaries
+		for (int i = 0; i < size; i++)
+		{
+			if (board[i][0].GetStatus() == 2)
+			{
+				Node* first = new Node();
+				first->i = i;
+				first->j = 0;
+				first->parent;
+				board[first->i][first->j].SetVisited(true);
+				int res = RecurseCheck(first, 2);
+				board[first->i][first->j].SetVisited(false);
+				if (res == 1)
+				{
+					std::cout << "Connected" << std::endl;
+				}
+				else
+				{
+					std::cout << "Disconnected" << std::endl;
+				}
+				delete first;
 			}
 		}
 	}
@@ -210,17 +224,31 @@ namespace UAS_KB
 		return false;
 	}
 
-	int HexGame::RecurseCheck(Node* parent)
+	int HexGame::RecurseCheck(Node* parent, int status)
 	{
-		if (parent->i == size - 1 || parent->j == size - 1)
+		std::cout << parent->i << " " << parent->j << std::endl;
+		if (status == 1)
 		{
-			return 1;
+			if (parent->i == size - 1)
+			{
+				return 1;
+			}
 		}
+		else if (status == 2)
+		{
+			if (parent->j == size - 1)
+			{
+				return 1;
+			}
+		}
+		
+		
+		
 		for (int i = 0; i < 6; i++)
 		{
 			if (IsValidIndex(parent->i, parent->j, direction[i][0], direction[i][1]))
 			{
-				if (board[parent->i + direction[i][0]][parent->j + direction[i][1]].GetStatus() == 1)
+				if (board[parent->i + direction[i][0]][parent->j + direction[i][1]].GetStatus() == status)
 				{
 					if (board[parent->i + direction[i][0]][parent->j + direction[i][1]].IsVisited() == false)
 					{
@@ -229,12 +257,13 @@ namespace UAS_KB
 						node->j = parent->j + direction[i][1];
 						node->parent = parent;
 						board[node->i][node->j].SetVisited(true);
-						int res = RecurseCheck(node);
+						int res = RecurseCheck(node, status);
 						board[node->i][node->j].SetVisited(false);
 						if (res == 1)
 						{
 							return 1;
 						}
+						delete node;
 					}
 				}
 				

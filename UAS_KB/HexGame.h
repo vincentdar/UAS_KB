@@ -56,7 +56,7 @@ namespace UAS_KB
 		void DisplayBoardStatus();
 		void CheckBoardCondition();
 		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
-		int RecurseCheck(Node* parent);
+		int RecurseCheck(Node* parent, int status);
 	};
 
 }
