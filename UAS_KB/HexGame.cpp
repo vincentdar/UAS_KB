@@ -15,13 +15,20 @@ namespace UAS_KB
 	{		
 		std::cout << "Abed beb" << std::endl;
 		m_data->assets.LoadTexture("HexTile", HEX_TILESET);
+		m_data->assets.LoadTexture("StartButton", UI_BUTTON_START);
+		m_data->assets.LoadTexture("RestartButton", UI_BUTTON_RESTART);
+		m_data->assets.LoadTexture("BackButton", UI_BUTTON_BACK);
 
 		//Start to create board
 		CreateBoard();
+
+		startButton.VInit(m_data, sf::Vector2f(10, 600), 0.4f, "StartButton");
+		restartButton.VInit(m_data, sf::Vector2f(120, 650), 0.2f, "RestartButton");
+		exitButton.VInit(m_data, sf::Vector2f(175, 650), 0.2f, "BackButton");
 	}
 	void HexGame::VDraw(float dt)
 	{
-		m_data->window.clear(sf::Color::Red);
+		m_data->window.clear(backgroundColor);
 		// Draw Disini
 		for (int i = 0; i < size; i++)
 		{
@@ -30,6 +37,10 @@ namespace UAS_KB
 				m_data->window.draw(board[i][j].VGetSprite());
 			}
 		}
+		//Draw UI
+		m_data->window.draw(startButton.VGetSprite());
+		m_data->window.draw(restartButton.VGetSprite());
+		m_data->window.draw(exitButton.VGetSprite());
 		m_data->window.display();
 	}
 	void HexGame::VHandleInput()
@@ -61,10 +72,15 @@ namespace UAS_KB
 						board[i][j].ClickBlue(localPosition.x, localPosition.y);
 					}
 				}
+				//Check if it presses UI button
+				startButtonClicked = startButton.OnClicked(true, localPosition.x, localPosition.y);
+				restartButtonClicked = restartButton.OnClicked(true, localPosition.x, localPosition.y);
+				exitButtonClicked = exitButton.OnClicked(true, localPosition.x, localPosition.y);
 			}
 			if (event.mouseButton.button == sf::Mouse::Right)
 			{
 				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
+				std::cout << "x: " << localPosition.x << " y: " << localPosition.y << std::endl;
 				for (int i = 0; i < size; i++)
 				{
 					for (int j = 0; j < size; j++)
@@ -74,7 +90,6 @@ namespace UAS_KB
 				}
 			}
 		}
-		//Polling input khusus Member Variable berupa Objek misal. m_hero.HandleInput()
 	}
 	void HexGame::VUpdate(float dt)
 	{
@@ -94,6 +109,24 @@ namespace UAS_KB
 		{
 			DisplayBoardStatus();
 			displayBoard = false;
+		}
+		//UPDATE START BUTTON
+		if (startButtonClicked)
+		{
+			UIStart();
+			startButtonClicked = false;
+		}
+		//UPDATE RESTART BUTTON
+		if (restartButtonClicked)
+		{
+			UIRestart();
+			restartButtonClicked = false;
+		}
+		//UPDATE EXIT BUTTON
+		if (exitButtonClicked)
+		{
+			UIExit();
+			exitButtonClicked = false;
 		}
 	}
 	void HexGame::VResume()
@@ -270,6 +303,21 @@ namespace UAS_KB
 			}
 		}
 		return 0;
+	}
+
+	void HexGame::UIStart()
+	{
+		std::cout << "FUNCTION UI START" << std::endl;
+	}
+
+	void HexGame::UIRestart()
+	{
+		std::cout << "FUNCTION UI RESTART" << std::endl;
+	}
+
+	void HexGame::UIExit()
+	{
+		std::cout << "FUNCTION UI EXIT" << std::endl;
 	}
 
 }

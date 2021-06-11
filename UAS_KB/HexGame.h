@@ -2,6 +2,7 @@
 #include "IState.h"
 #include "Game.h"
 #include "HexTile.h"
+#include "Button.h"
 #include <SFML/Graphics.hpp>
 
 namespace UAS_KB
@@ -41,6 +42,15 @@ namespace UAS_KB
 		bool exit = false;
 		bool displayBoard = false;
 
+		//UI Components
+		sf::Color backgroundColor = sf::Color(123, 129, 135);
+		Button startButton;
+		bool startButtonClicked = false;
+		Button restartButton;
+		bool restartButtonClicked = false;
+		Button exitButton;
+		bool exitButtonClicked = false;
+
 	public:
 		HexGame(GameDataRef data);
 		~HexGame();
@@ -57,6 +67,11 @@ namespace UAS_KB
 		void CheckBoardCondition();
 		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
 		int RecurseCheck(Node* parent, int status);
+
+		//UI Function
+		void UIStart();
+		void UIRestart();
+		void UIExit();
 	};
 
 }
