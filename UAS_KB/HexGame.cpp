@@ -80,7 +80,7 @@ namespace UAS_KB
 			if (event.mouseButton.button == sf::Mouse::Right)
 			{
 				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
-				std::cout << "x: " << localPosition.x << " y: " << localPosition.y << std::endl;
+				//std::cout << "x: " << localPosition.x << " y: " << localPosition.y << std::endl;
 				for (int i = 0; i < size; i++)
 				{
 					for (int j = 0; j < size; j++)
@@ -95,6 +95,7 @@ namespace UAS_KB
 	{
 		if (exit)
 		{
+			VExit();
 			return;
 		}
 		//Update Board
@@ -308,16 +309,31 @@ namespace UAS_KB
 	void HexGame::UIStart()
 	{
 		std::cout << "FUNCTION UI START" << std::endl;
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+
+			}
+		}
 	}
 
 	void HexGame::UIRestart()
 	{
 		std::cout << "FUNCTION UI RESTART" << std::endl;
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				board[i][j].SetStatus(0);
+			}
+		}
 	}
 
 	void HexGame::UIExit()
 	{
 		std::cout << "FUNCTION UI EXIT" << std::endl;
+		exit = true;
 	}
 
 }

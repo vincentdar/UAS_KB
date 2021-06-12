@@ -24,6 +24,10 @@ namespace UAS_KB
 	}
 	void HexTile::VUpdate(float dt)
 	{
+		if (status == 0)
+		{
+			anim.Change(1, 0.5, 2, 0);
+		}
 		anim.Update(dt, m_sprite, true);
 	}
 	sf::Sprite& HexTile::VGetSprite()
@@ -68,7 +72,6 @@ namespace UAS_KB
 	void HexTile::SetStatus(int status)
 	{
 		this->status = status;
-		anim.Change(1, 0.5, 1, 0);
 	}
 	int HexTile::GetStatus()
 	{
