@@ -85,4 +85,10 @@ namespace UAS_KB
 	{
 		return visited;
 	}
+	
+
+	/*double getHeuristicScore() {
+		double retrievedScore;
+		if (retrievedScore = )
+	}*/
 }

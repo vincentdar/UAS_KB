@@ -68,6 +68,10 @@ namespace UAS_KB
 		bool condition();
 		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
 		int RecurseCheck(Node* parent, int status);
+		bool IsBoardFull();
+		double alphaBetaPrunedMiniMax(HexTile** board, bool maxPlayer, int depth, double alpha, double beta);
+		std::vector<Node> GetPossibleMoves();
+		UAS_KB::HexTile** updateBoardWithMove(HexTile** board, Node move, int value);
 
 		//UI Function
 		void UIStart();
