@@ -64,7 +64,8 @@ namespace UAS_KB
 		void CreateBoard();
 		void DestroyBoard();
 		void DisplayBoardStatus();
-		void CheckBoardCondition();
+		int CheckBoardCondition();
+		bool condition();
 		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
 		int RecurseCheck(Node* parent, int status);
 
