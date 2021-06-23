@@ -71,7 +71,12 @@ namespace UAS_KB
 					{
 						board[i][j].ClickBlue(localPosition.x, localPosition.y);
 					}
+					
 				}
+				if (condition())//just true and false
+				{
+					std::cout << "Permainan Berakhir";
+				};
 				//Check if it presses UI button
 				startButtonClicked = startButton.OnClicked(true, localPosition.x, localPosition.y);
 				restartButtonClicked = restartButton.OnClicked(true, localPosition.x, localPosition.y);
@@ -88,7 +93,12 @@ namespace UAS_KB
 						board[i][j].ClickRed(localPosition.x, localPosition.y);
 					}
 				}
+				if (condition())//just true and false
+				{
+					std::cout << "Permainan Berakhir";
+				};
 			}
+			
 		}
 	}
 	void HexGame::VUpdate(float dt)
@@ -194,10 +204,10 @@ namespace UAS_KB
 			std::cout << std::endl;
 		}
 		std::cout << std::endl;
-		CheckBoardCondition();
+		/*CheckBoardCondition();*/
 		std::cout << std::endl;
 	}
-	void HexGame::CheckBoardCondition()
+	int  HexGame::CheckBoardCondition()
 	{
 		//Check if board is touching the top and bottom boundaries
 		//top boundaries
@@ -215,10 +225,11 @@ namespace UAS_KB
 				if (res == 1)
 				{
 					std::cout << "Connected" << std::endl;
+					return 1;
 				}
 				else
 				{
-					std::cout << "Disconnected" << std::endl;
+					std::cout << "Disconnected For Blue" << std::endl;
 				}
 				delete first;
 			}
@@ -239,16 +250,41 @@ namespace UAS_KB
 				if (res == 1)
 				{
 					std::cout << "Connected" << std::endl;
+					return 2;
 				}
 				else
 				{
-					std::cout << "Disconnected" << std::endl;
+					std::cout << "Disconnected For Red" << std::endl;
+					
 				}
+			
 				delete first;
 			}
 		}
+		return 3;
 	}
 
+	bool HexGame::condition()
+	{
+		int i = CheckBoardCondition();
+		if (i == 1)
+		{
+			std::cout << "Biru Menang\n";
+
+			return true;
+		}
+		if (i == 2)
+		{
+			std::cout << "Kuning Menang\n";
+			return true;
+		}
+		if (i == 3)
+		{
+			std::cout << "Waiting....\n";
+			return false;
+		}
+		return false;
+	}
 	bool HexGame::IsValidIndex(int x, int y, int dir_x, int dir_y)
 	{
 		if ((x + dir_x >= 0 && x + dir_x < size) && (y + dir_y >= 0 && y + dir_y < size))
