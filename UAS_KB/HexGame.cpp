@@ -306,75 +306,6 @@ namespace UAS_KB
 		return true;
 	}
 
-	double HexGame::alphaBetaPrunedMiniMax(HexTile** board, bool maxPlayer, int depth, double alpha, double beta) {
-		int _alpha = alpha;
-		int _beta = beta;
-
-		if (depth == 0 || IsBoardFull()) {
-			//return getHeuristicScore()
-		}
-
-		std::vector<Node> moves = GetPossibleMoves();
-		if (moves.size() > 0) {
-			if (maxPlayer) {
-				double bestValue = -DBL_MAX;
-				for (Node move : moves) {
-					HexTile** updatedBoard;
-					updatedBoard = new HexTile* [size];
-					for (int i = 0; i < size; i++)
-					{
-						updatedBoard[i] = new HexTile[size];
-					}
-					//VInit
-					for (int i = 0; i < size; i++)
-					{
-						for (int j = 0; j < size; j++)
-						{
-							updatedBoard[i][j].VInit(m_data);
-						}
-					}
-					updatedBoard = updateBoardWithMove(board, move, 2);
-					bestValue = std::max(bestValue, alphaBetaPrunedMiniMax(updatedBoard, false, depth - 1, alpha, beta));
-					alpha = std::max(alpha, bestValue);
-					if (beta <= alpha) {
-						break;
-					}
-				}
-				return bestValue;
-			}
-			else {
-				double bestValue = DBL_MAX;
-				for (Node move : moves) {
-					HexTile** updatedBoard;
-					updatedBoard = new HexTile * [size];
-					for (int i = 0; i < size; i++)
-					{
-						updatedBoard[i] = new HexTile[size];
-					}
-					//VInit
-					for (int i = 0; i < size; i++)
-					{
-						for (int j = 0; j < size; j++)
-						{
-							updatedBoard[i][j].VInit(m_data);
-						}
-					}
-					updatedBoard = updateBoardWithMove(board, move, 2);
-					bestValue = std::min(bestValue, alphaBetaPrunedMiniMax(updatedBoard, false, depth - 1, alpha, beta));
-					beta = std::min(beta, bestValue);
-					if (beta <= alpha) {
-						break;
-					}
-				}
-				return bestValue;
-			}
-		}
-		else {
-			// return getHeuristicScore();
-		}
-		
-
-	}
 
 	std::vector<Node> HexGame::GetPossibleMoves()
 	{
@@ -391,12 +322,6 @@ namespace UAS_KB
 			}
 		}
 		return possibleMoves;
-	}
-
-	HexTile** HexGame::updateBoardWithMove(HexTile** board, Node move, int value)
-	{
-		board[move.i][move.j].SetStatus(value);
-		return board;
 	}
 
 	int HexGame::RecurseCheck(Node* parent, int status)
