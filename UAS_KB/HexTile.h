@@ -24,8 +24,8 @@ namespace UAS_KB
 		virtual void VUpdate(float dt);
 		virtual sf::Sprite& VGetSprite();
 		void SetPosition(float x, float y);
-		void ClickBlue(int x, int y);
-		void ClickRed(int x, int y);
+		bool ClickBlue(int x, int y);
+		bool ClickRed(int x, int y);
 		void SetStatus(int status);
 		int GetStatus();
 		void SetVisited(bool b);
