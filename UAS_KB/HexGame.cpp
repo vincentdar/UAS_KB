@@ -65,16 +65,20 @@ namespace UAS_KB
 			}
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
+				bool isClicked = false;
 				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
 				for (int i = 0; i < size; i++)
 				{
 					for (int j = 0; j < size; j++)
 					{
-						board[i][j].ClickBlue(localPosition.x, localPosition.y);
+						isClicked = board[i][j].ClickBlue(localPosition.x, localPosition.y);
+						if (isClicked)
+						{
+							status = 1;
+						}
 					}
-					
 				}
-				if (condition())//just true and false
+				if (condition())	//just true and false
 				{
 					std::cout << "Permainan Berakhir";
 				};
@@ -83,22 +87,22 @@ namespace UAS_KB
 				restartButtonClicked = restartButton.OnClicked(true, localPosition.x, localPosition.y);
 				exitButtonClicked = exitButton.OnClicked(true, localPosition.x, localPosition.y);
 			}
-			if (event.mouseButton.button == sf::Mouse::Right)
-			{
-				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
-				//std::cout << "x: " << localPosition.x << " y: " << localPosition.y << std::endl;
-				for (int i = 0; i < size; i++)
-				{
-					for (int j = 0; j < size; j++)
-					{
-						board[i][j].ClickRed(localPosition.x, localPosition.y);
-					}
-				}
-				if (condition())//just true and false
-				{
-					std::cout << "Permainan Berakhir";
-				};
-			}
+			//if (event.mouseButton.button == sf::Mouse::Right)
+			//{
+			//	sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
+			//	//std::cout << "x: " << localPosition.x << " y: " << localPosition.y << std::endl;
+			//	for (int i = 0; i < size; i++)
+			//	{
+			//		for (int j = 0; j < size; j++)
+			//		{
+			//			board[i][j].ClickRed(localPosition.x, localPosition.y);
+			//		}
+			//	}
+			//	if (condition())//just true and false
+			//	{
+			//		std::cout << "Permainan Berakhir";
+			//	};
+			//}
 			
 		}
 	}
@@ -121,6 +125,41 @@ namespace UAS_KB
 		{
 			DisplayBoardStatus();
 			displayBoard = false;
+		}
+		if (status == 1)
+		{
+			std::cout << "Computer Turns" << std::endl;
+			int moveValue = INT_MAX;
+			int bestValue = INT_MIN;
+			int bestValue_row = -1;
+			int bestValue_col = -1;
+			//Parent of Alpha Beta Minimax, AI Starts here
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (board[i][j].GetStatus() == 0)
+					{
+						//Minimax Starts here
+						board[i][j].SetStatus(2);
+						moveValue = Minimax(1, false, INT_MIN, INT_MAX);
+						board[i][j].SetStatus(0);
+						std::cout << "Row: " << i << " Col: " << j << " Value: " << moveValue << std::endl;
+						//Find the best value
+						if (moveValue > bestValue)
+						{
+							bestValue = moveValue;
+							bestValue_row = i;
+							bestValue_col = j;
+						}
+					}
+				}
+			}
+			//std::cout << "Row: " << bestValue_row << " Col: " << bestValue_col << std::endl;
+			board[bestValue_row][bestValue_col].SetStatus(2);
+			status = 0;
+			std::cout << "Global Count: " << globalCount << std::endl;
+			globalCount = 0;
 		}
 		//UPDATE START BUTTON
 		if (startButtonClicked)
@@ -225,12 +264,13 @@ namespace UAS_KB
 				board[first->i][first->j].SetVisited(false);
 				if (res == 1)
 				{
-					std::cout << "Connected" << std::endl;
+					//std::cout << "Connected" << std::endl;
+					delete first;
 					return 1;
 				}
 				else
 				{
-					std::cout << "Disconnected For Blue" << std::endl;
+					//std::cout << "Disconnected For Blue" << std::endl;
 				}
 				delete first;
 			}
@@ -250,21 +290,20 @@ namespace UAS_KB
 				board[first->i][first->j].SetVisited(false);
 				if (res == 1)
 				{
-					std::cout << "Connected" << std::endl;
+					//std::cout << "Connected" << std::endl;
+					delete first;
 					return 2;
 				}
 				else
 				{
-					std::cout << "Disconnected For Red" << std::endl;
+					//std::cout << "Disconnected For Red" << std::endl;
 					
 				}
-			
 				delete first;
 			}
 		}
 		return 3;
 	}
-
 	bool HexGame::condition()
 	{
 		int i = CheckBoardCondition();
@@ -294,7 +333,6 @@ namespace UAS_KB
 		}
 		return false;
 	}
-
 	bool HexGame::IsBoardFull() {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
@@ -305,77 +343,6 @@ namespace UAS_KB
 		}
 		return true;
 	}
-
-	double HexGame::alphaBetaPrunedMiniMax(HexTile** board, bool maxPlayer, int depth, double alpha, double beta) {
-		int _alpha = alpha;
-		int _beta = beta;
-
-		if (depth == 0 || IsBoardFull()) {
-			//return getHeuristicScore()
-		}
-
-		std::vector<Node> moves = GetPossibleMoves();
-		if (moves.size() > 0) {
-			if (maxPlayer) {
-				double bestValue = -DBL_MAX;
-				for (Node move : moves) {
-					HexTile** updatedBoard;
-					updatedBoard = new HexTile* [size];
-					for (int i = 0; i < size; i++)
-					{
-						updatedBoard[i] = new HexTile[size];
-					}
-					//VInit
-					for (int i = 0; i < size; i++)
-					{
-						for (int j = 0; j < size; j++)
-						{
-							updatedBoard[i][j].VInit(m_data);
-						}
-					}
-					updatedBoard = updateBoardWithMove(board, move, 2);
-					bestValue = std::max(bestValue, alphaBetaPrunedMiniMax(updatedBoard, false, depth - 1, alpha, beta));
-					alpha = std::max(alpha, bestValue);
-					if (beta <= alpha) {
-						break;
-					}
-				}
-				return bestValue;
-			}
-			else {
-				double bestValue = DBL_MAX;
-				for (Node move : moves) {
-					HexTile** updatedBoard;
-					updatedBoard = new HexTile * [size];
-					for (int i = 0; i < size; i++)
-					{
-						updatedBoard[i] = new HexTile[size];
-					}
-					//VInit
-					for (int i = 0; i < size; i++)
-					{
-						for (int j = 0; j < size; j++)
-						{
-							updatedBoard[i][j].VInit(m_data);
-						}
-					}
-					updatedBoard = updateBoardWithMove(board, move, 2);
-					bestValue = std::min(bestValue, alphaBetaPrunedMiniMax(updatedBoard, false, depth - 1, alpha, beta));
-					beta = std::min(beta, bestValue);
-					if (beta <= alpha) {
-						break;
-					}
-				}
-				return bestValue;
-			}
-		}
-		else {
-			// return getHeuristicScore();
-		}
-		
-
-	}
-
 	std::vector<Node> HexGame::GetPossibleMoves()
 	{
 		std::vector<Node> possibleMoves;
@@ -393,15 +360,136 @@ namespace UAS_KB
 		return possibleMoves;
 	}
 
-	HexTile** HexGame::updateBoardWithMove(HexTile** board, Node move, int value)
+	int HexGame::Max(int a, int b)
 	{
-		board[move.i][move.j].SetStatus(value);
-		return board;
+		if (a > b)
+		{
+			return a;
+		}
+		return b;
+	}
+
+	int HexGame::Min(int a, int b)
+	{
+		if (a < b)
+		{
+			return a;
+		}
+		return b;
+	}
+
+	int HexGame::Minimax(int depth, bool isComputerTurn, int alpha, int beta)	//1 node sendiri
+	{
+		globalCount++;
+		//Evaluate Board
+		int score = EvaluateBoard();
+		//Computer Wins
+		if (score == 10)
+		{
+			//std::cout << "SCORE 10 depth: " << depth << std::endl;
+			return score - depth;
+		}
+
+		//Human Wins
+		if (score == -10)
+		{
+			//std::cout << "SCORE -10 depth: " << depth << std::endl;
+			return score + depth;
+		}
+
+		//Check Available Moves
+		if (IsBoardFull())
+		{
+			//Tie
+			return 0;
+		}
+		
+		int bestValue = 0;
+
+		if (isComputerTurn) 
+		{
+			bestValue = INT_MIN;
+			bool cut = false;
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (board[i][j].GetStatus() == 0)
+					{
+						int eval = 0;
+						board[i][j].SetStatus(2);
+						eval = Minimax(depth + 1, false, alpha, beta);
+						board[i][j].SetStatus(0);
+						bestValue = Max(bestValue, eval);
+						alpha = Max(alpha, eval);
+						if (beta <= alpha)
+						{
+							cut = true;
+						}
+					}
+					if (cut)
+					{
+						break;
+					}
+				}
+				if (cut)
+				{
+					break;
+				}
+			}
+		}
+		else 
+		{
+			bestValue = INT_MAX;
+			bool cut = false;
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (board[i][j].GetStatus() == 0)
+					{
+						int eval = 0;
+						board[i][j].SetStatus(1);
+						eval = Minimax(depth + 1, true, alpha, beta);
+						board[i][j].SetStatus(0);
+						bestValue = Min(bestValue, eval);
+						beta = Min(beta, eval);
+						if (beta <= alpha)
+						{
+							cut = true;
+						}
+					}
+					if (cut)
+					{
+						break;
+					}
+				}
+				if (cut)
+				{
+					break;
+				}
+			}
+		}
+		return bestValue;
+	}
+
+	int HexGame::EvaluateBoard()
+	{
+		int eval = CheckBoardCondition();
+		if (eval == 1)
+		{
+			return -10;
+		}
+		else if (eval == 2)
+		{
+			return 10;
+		}
+		return 0;
 	}
 
 	int HexGame::RecurseCheck(Node* parent, int status)
 	{
-		std::cout << parent->i << " " << parent->j << std::endl;
+		//std::cout << parent->i << " " << parent->j << std::endl;
 		if (status == 1)
 		{
 			if (parent->i == size - 1)
@@ -446,7 +534,6 @@ namespace UAS_KB
 		}
 		return 0;
 	}
-
 	void HexGame::UIStart()
 	{
 		std::cout << "FUNCTION UI START" << std::endl;
@@ -458,7 +545,6 @@ namespace UAS_KB
 			}
 		}
 	}
-
 	void HexGame::UIRestart()
 	{
 		std::cout << "FUNCTION UI RESTART" << std::endl;
@@ -470,7 +556,6 @@ namespace UAS_KB
 			}
 		}
 	}
-
 	void HexGame::UIExit()
 	{
 		std::cout << "FUNCTION UI EXIT" << std::endl;

@@ -38,9 +38,12 @@ namespace UAS_KB
 		//Game Components
 		HexTile** board;
 		int direction[6][2] = { {0, -1}, {1 , -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1} };
-		int size = 11;
+		int size = 3;
 		bool exit = false;
 		bool displayBoard = false;
+		bool status = 0;
+		//Log
+		int globalCount = 0;
 
 		//UI Components
 		sf::Color backgroundColor = sf::Color(123, 129, 135);
@@ -69,9 +72,15 @@ namespace UAS_KB
 		bool IsValidIndex(int x, int y, int dir_x, int dir_y);
 		int RecurseCheck(Node* parent, int status);
 		bool IsBoardFull();
-		double alphaBetaPrunedMiniMax(HexTile** board, bool maxPlayer, int depth, double alpha, double beta);
 		std::vector<Node> GetPossibleMoves();
-		UAS_KB::HexTile** updateBoardWithMove(HexTile** board, Node move, int value);
+
+		//Utility
+		int Max(int a, int b);
+		int Min(int a, int b);
+
+		//AI MINIMAX
+		int Minimax(int depth, bool isComputerTurn, int alpha, int beta);
+		int EvaluateBoard();
 
 		//UI Function
 		void UIStart();

@@ -39,7 +39,7 @@ namespace UAS_KB
 	{
 		m_sprite.setPosition(x, y);
 	}
-	void HexTile::ClickBlue(int x, int y)
+	bool HexTile::ClickBlue(int x, int y)
 	{
 		sf::Vector2f origin = m_sprite.getPosition();
 		if (x >= origin.x && x <= origin.x + 60)
@@ -50,11 +50,13 @@ namespace UAS_KB
 				{
 					anim.Change(1, 0.5, 1, 0);
 					status = 1;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
-	void HexTile::ClickRed(int x, int y)
+	bool HexTile::ClickRed(int x, int y)
 	{
 		sf::Vector2f origin = m_sprite.getPosition();
 		if (x >= origin.x && x <= origin.x + 60)
@@ -65,13 +67,27 @@ namespace UAS_KB
 				{
 					anim.Change(1, 0.5, 0, 0);
 					status = 2;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	void HexTile::SetStatus(int status)
 	{
 		this->status = status;
+		if (status == 0)
+		{
+			anim.Change(1, 0.5, 2, 0);
+		}
+		else if (status == 1)
+		{
+			anim.Change(1, 0.5, 1, 0);
+		}
+		else if (status == 2)
+		{
+			anim.Change(1, 0.5, 0, 0);
+		}
 	}
 	int HexTile::GetStatus()
 	{
