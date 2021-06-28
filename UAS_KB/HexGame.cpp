@@ -128,38 +128,42 @@ namespace UAS_KB
 		}
 		if (status == 1)
 		{
-			std::cout << "Computer Turns" << std::endl;
-			int moveValue = INT_MAX;
-			int bestValue = INT_MIN;
-			int bestValue_row = -1;
-			int bestValue_col = -1;
-			//Parent of Alpha Beta Minimax, AI Starts here
-			for (int i = 0; i < size; i++)
+			if (!IsBoardFull())
 			{
-				for (int j = 0; j < size; j++)
+				std::cout << "Computer Turns" << std::endl;
+				int moveValue = INT_MAX;
+				int bestValue = INT_MIN;
+				int bestValue_row = -1;
+				int bestValue_col = -1;
+				//Parent of Alpha Beta Minimax, AI Starts here
+				for (int i = 0; i < size; i++)
 				{
-					if (board[i][j].GetStatus() == 0)
+					for (int j = 0; j < size; j++)
 					{
-						//Minimax Starts here
-						board[i][j].SetStatus(2);
-						moveValue = Minimax(1, false, INT_MIN, INT_MAX);
-						board[i][j].SetStatus(0);
-						std::cout << "Row: " << i << " Col: " << j << " Value: " << moveValue << std::endl;
-						//Find the best value
-						if (moveValue > bestValue)
+						if (board[i][j].GetStatus() == 0)
 						{
-							bestValue = moveValue;
-							bestValue_row = i;
-							bestValue_col = j;
+							//Minimax Starts here
+							board[i][j].SetStatus(2);
+							moveValue = Minimax(1, false, INT_MIN, INT_MAX);
+							board[i][j].SetStatus(0);
+							std::cout << "Row: " << i << " Col: " << j << " Value: " << moveValue << std::endl;
+							//Find the best value
+							if (moveValue > bestValue)
+							{
+								bestValue = moveValue;
+								bestValue_row = i;
+								bestValue_col = j;
+							}
 						}
 					}
 				}
+				//std::cout << "Row: " << bestValue_row << " Col: " << bestValue_col << std::endl;
+				board[bestValue_row][bestValue_col].SetStatus(2);
+				status = 0;
+				std::cout << "Global Count: " << globalCount << std::endl;
+				globalCount = 0;
 			}
-			//std::cout << "Row: " << bestValue_row << " Col: " << bestValue_col << std::endl;
-			board[bestValue_row][bestValue_col].SetStatus(2);
-			status = 0;
-			std::cout << "Global Count: " << globalCount << std::endl;
-			globalCount = 0;
+			
 		}
 		//UPDATE START BUTTON
 		if (startButtonClicked)
@@ -310,11 +314,18 @@ namespace UAS_KB
 		if (i == 1)
 		{
 			std::cout << "Biru Menang\n";
-
+			std::string pharse = "Blue Win";
+			std::string command = "espeak \"" + pharse + "\"";
+			const char* charCommand = command.c_str();
+			system(charCommand);
 			return true;
 		}
 		if (i == 2)
 		{
+			std::string pharse = "Yellow Win";
+			std::string command = "espeak \"" + pharse + "\"";
+			const char* charCommand = command.c_str();
+			system(charCommand);
 			std::cout << "Kuning Menang\n";
 			return true;
 		}
@@ -377,17 +388,32 @@ namespace UAS_KB
 		}
 		return b;
 	}
-
+	
+	/*int HexGame::getHeuristicScore(int score,int count)
+	{
+		int retreivedScore = transposTable
+	}*/
 	int HexGame::Minimax(int depth, bool isComputerTurn, int alpha, int beta)	//1 node sendiri
 	{
 		globalCount++;
 		//Evaluate Board
+		if (depth == 7) {
+			return EvaluateBoard();
+		}
+		
 		int score = EvaluateBoard();
+
+		
+		//Transposition 
+		
+		
+
+		
 		//Computer Wins
 		if (score == 10)
 		{
 			//std::cout << "SCORE 10 depth: " << depth << std::endl;
-			return score - depth;
+			return score - depth;	
 		}
 
 		//Human Wins

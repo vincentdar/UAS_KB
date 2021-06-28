@@ -38,10 +38,11 @@ namespace UAS_KB
 		//Game Components
 		HexTile** board;
 		int direction[6][2] = { {0, -1}, {1 , -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1} };
-		int size = 3;
+		int size = 4;
 		bool exit = false;
 		bool displayBoard = false;
 		bool status = 0;
+		std::vector<int>** transposTable;
 		//Log
 		int globalCount = 0;
 
@@ -73,10 +74,15 @@ namespace UAS_KB
 		int RecurseCheck(Node* parent, int status);
 		bool IsBoardFull();
 		std::vector<Node> GetPossibleMoves();
+		int getHeuristicScore(int score,int count);
+
 
 		//Utility
 		int Max(int a, int b);
 		int Min(int a, int b);
+
+		
+
 
 		//AI MINIMAX
 		int Minimax(int depth, bool isComputerTurn, int alpha, int beta);
