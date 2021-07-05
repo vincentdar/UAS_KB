@@ -45,7 +45,8 @@ namespace UAS_KB
 		std::vector<int>** transposTable;
 		//Log
 		int globalCount = 0;
-
+		bool isUpdate = false;
+		bool isOver = false;
 		//UI Components
 		sf::Color backgroundColor = sf::Color(123, 129, 135);
 		Button startButton;
