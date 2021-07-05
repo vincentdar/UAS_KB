@@ -50,43 +50,49 @@ namespace UAS_KB
 		while (m_data->window.pollEvent(event))
 		{
 			//Input khusus State HexGame disini
-			if (sf::Event::Closed == event.type)
-			{
-				this->VExit();
-				this->m_data->window.close();
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			{
-				this->VExit();
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-			{
-				displayBoard = true;
-			}
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-				bool isClicked = false;
-				sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
-				for (int i = 0; i < size; i++)
+			
+				if (sf::Event::Closed == event.type)
 				{
-					for (int j = 0; j < size; j++)
+					this->VExit();
+					this->m_data->window.close();
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+				{
+					this->VExit();
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+				{
+					displayBoard = true;
+				}
+			if (!isUpdate && !isOver)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+
+					bool isClicked = false;
+					sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
+					for (int i = 0; i < size; i++)
 					{
-						isClicked = board[i][j].ClickBlue(localPosition.x, localPosition.y);
-						if (isClicked)
+						for (int j = 0; j < size; j++)
 						{
-							status = 1;
+							isClicked = board[i][j].ClickBlue(localPosition.x, localPosition.y);
+							if (isClicked)
+							{
+								status = 1;
+							}
 						}
 					}
+					if (condition())	//just true and false
+					{
+						std::cout << "Permainan Berakhir";
+					};
+					//Check if it presses UI button
+					startButtonClicked = startButton.OnClicked(true, localPosition.x, localPosition.y);
+					restartButtonClicked = restartButton.OnClicked(true, localPosition.x, localPosition.y);
+					exitButtonClicked = exitButton.OnClicked(true, localPosition.x, localPosition.y);
 				}
-				if (condition())	//just true and false
-				{
-					std::cout << "Permainan Berakhir";
-				};
-				//Check if it presses UI button
-				startButtonClicked = startButton.OnClicked(true, localPosition.x, localPosition.y);
-				restartButtonClicked = restartButton.OnClicked(true, localPosition.x, localPosition.y);
-				exitButtonClicked = exitButton.OnClicked(true, localPosition.x, localPosition.y);
 			}
+			
 			//if (event.mouseButton.button == sf::Mouse::Right)
 			//{
 			//	sf::Vector2i localPosition = sf::Mouse::getPosition(m_data->window);
@@ -108,6 +114,7 @@ namespace UAS_KB
 	}
 	void HexGame::VUpdate(float dt)
 	{
+		isUpdate = true;
 		if (exit)
 		{
 			VExit();
@@ -183,6 +190,8 @@ namespace UAS_KB
 			UIExit();
 			exitButtonClicked = false;
 		}
+		isUpdate = false;
+
 	}
 	void HexGame::VResume()
 	{
@@ -318,6 +327,8 @@ namespace UAS_KB
 			std::string command = "espeak \"" + pharse + "\"";
 			const char* charCommand = command.c_str();
 			system(charCommand);
+			isOver = true;
+
 			return true;
 		}
 		if (i == 2)
@@ -327,6 +338,8 @@ namespace UAS_KB
 			const char* charCommand = command.c_str();
 			system(charCommand);
 			std::cout << "Kuning Menang\n";
+			isOver = true;
+
 			return true;
 		}
 		if (i == 3)
